@@ -6,6 +6,7 @@ import com.artsoft.examapp.appsdk.entity.Student;
 import com.artsoft.examapp.appsdk.lesson.*;
 import com.artsoft.examapp.appsdk.lesson.Math;
 import com.artsoft.examapp.appsdk.repository.StudentRepository;
+import com.artsoft.examapp.appsdk.util.BaseVariable;
 import com.artsoft.examapp.appsdk.util.JsonConverter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +38,10 @@ public class AppSdkApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         List<Lesson> lessonList = Arrays.asList(
                 Math.builder()
-                        .lessonName("Matematik")
+                        .baseVariable(
+                                BaseVariable.builder()
+                                    .lessonName("Matematik")
+                                    .build())
                         .build(),
                 Turkish.builder()
                         .lessonName("Türkçe")

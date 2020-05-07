@@ -69,4 +69,9 @@ public class AppConfig {
     public EqualFocusScore equalFocusScore(){
         return new EqualFocusScore();
     }
+
+    @Bean
+    public BaseVariable baseVariable(){
+        return new BaseVariable();
+    }
 }

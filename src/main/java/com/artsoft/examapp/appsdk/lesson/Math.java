@@ -1,9 +1,8 @@
 package com.artsoft.examapp.appsdk.lesson;
 
 import com.artsoft.examapp.appsdk.score.ScoreType;
-import com.artsoft.examapp.appsdk.util.LessonCoefficience;
+import com.artsoft.examapp.appsdk.util.BaseVariable;
 import com.artsoft.examapp.appsdk.util.LessonEnum;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,11 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Math implements Lesson {
 
-    private String lessonName;
-    private int trueQuantity;
-    private int falseQuantity;
-    private int nullQuantity;
-    private float netQuantity;
+    BaseVariable baseVariable;
 
     @Override
     public float scoreTypeCoefficient(ScoreType scoreType) {
@@ -34,52 +29,52 @@ public class Math implements Lesson {
 
     @Override
     public int gTrue() {
-        return trueQuantity;
+        return baseVariable.getTrueQuantity();
     }
 
     @Override
     public int gFalse() {
-        return falseQuantity;
+        return baseVariable.getFalseQuantity();
     }
 
     @Override
     public int gNull() {
-        return nullQuantity;
+        return baseVariable.getNullQuantity();
     }
 
     @Override
     public float gNet() {
-        return netQuantity;
+        return baseVariable.getNetQuantity();
     }
 
     @Override
     public void sTrue(int trueQuantity) {
-        this.trueQuantity = trueQuantity;
+        this.baseVariable.setTrueQuantity(trueQuantity);
     }
 
     @Override
     public void sFalse(int falseQuantity) {
-        this.falseQuantity = falseQuantity;
+        this.baseVariable.setFalseQuantity(falseQuantity);
     }
 
     @Override
     public void sNull(int nullQuantity) {
-        this.nullQuantity = nullQuantity;
+        this.baseVariable.setNullQuantity(nullQuantity);
     }
 
     @Override
     public void sNet(float netQuantity) {
-        this.netQuantity = netQuantity;
+        this.baseVariable.setNetQuantity(netQuantity);
     }
 
     @Override
     public String gLessonName() {
-        return lessonName;
+        return baseVariable.getLessonName();
     }
 
     @Override
     public void sLessonName(String lessonName) {
-        this.lessonName = lessonName;
+        this.baseVariable.setLessonName(lessonName);
     }
 
 }
