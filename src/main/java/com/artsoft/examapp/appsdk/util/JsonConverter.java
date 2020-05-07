@@ -7,7 +7,7 @@ import com.artsoft.examapp.appsdk.lesson.Math;
 import com.artsoft.examapp.appsdk.score.DigitalScore;
 import com.artsoft.examapp.appsdk.score.EqualFocusScore;
 import com.artsoft.examapp.appsdk.score.VerbalScore;
-import com.artsoft.examapp.appsdk.domain.Student;
+import com.artsoft.examapp.appsdk.domain.StudentDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,25 @@ public class JsonConverter {
     @Autowired
     LessonUtil lessonUtil;
 
-    public String resultCreate(Stream<Lesson> lessonStream){
+    @Autowired
+    ScoreUtil scoreUtil;
+
+    @Autowired
+    DigitalScore digitalScore;
+
+    @Autowired
+    VerbalScore verbalScore;
+
+    @Autowired
+    EqualFocusScore equalFocusScore;
+
+    private Result resultCreate(Stream<Lesson> lessonStream){
         ResultScore resultScore = new ResultScore();
 
-        String resultString = null;
         resultScore.setLessonList(lessonUtil.lessonCreate(lessonStream.collect(Collectors.toList())));
-        resultScore.setDigitalScore(ScoreUtil.scoreCalculate(new DigitalScore(), resultScore.getLessonList()));
-        resultScore.setEqualFocusScore(ScoreUtil.scoreCalculate(new EqualFocusScore(), resultScore.getLessonList()));
-        resultScore.setVerbalScore(ScoreUtil.scoreCalculate(new VerbalScore(), resultScore.getLessonList()));
+        resultScore.setDigitalScore(scoreUtil.scoreCalculate(digitalScore, resultScore.getLessonList())+SystemConstant.BASE_SCORE);
+        resultScore.setEqualFocusScore(scoreUtil.scoreCalculate(verbalScore, resultScore.getLessonList())+SystemConstant.BASE_SCORE);
+        resultScore.setVerbalScore(scoreUtil.scoreCalculate(equalFocusScore, resultScore.getLessonList())+SystemConstant.BASE_SCORE);
 
         Result result = new Result();
         resultScore.getLessonList().stream().filter(lesson -> lesson.gLessonName().equals("Matematik")).forEach(
@@ -45,18 +56,23 @@ public class JsonConverter {
         resultScore.getLessonList().stream().filter(lesson -> lesson.gLessonName().equals("Türkçe")).forEach(
                 lesson -> result.setTurkish((Turkish) lesson)
         );
+
         result.setDigitalScore(resultScore.getDigitalScore());
         result.setEqualFocusScore(resultScore.getEqualFocusScore());
         result.setVerbalScore(resultScore.getVerbalScore());
+
+        return result;
+    }
+
+    public String studentCreate(Stream<Lesson> lessonStream){
+        String studentString = null;
+        StudentDto studentDto = new StudentDto();
         try {
-            resultString = objectMapper.writeValueAsString(result);
+            studentDto.setResult(this.resultCreate(lessonStream));
+            studentString = objectMapper.writeValueAsString(studentDto);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return resultString;
-    }
-
-    public Student student(){
-        return null;
+        return studentString;
     }
 }

@@ -1,5 +1,7 @@
 package com.artsoft.examapp.appsdk.lesson;
 
+import com.artsoft.examapp.appsdk.score.ScoreType;
+import com.artsoft.examapp.appsdk.util.LessonCoefficience;
 import com.artsoft.examapp.appsdk.util.LessonEnum;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
@@ -21,18 +23,8 @@ public class Math implements Lesson {
     private float netQuantity;
 
     @Override
-    public float digitalCoefficient() {
-        return LessonEnum.MATH.digitalCoefficient;
-    }
-
-    @Override
-    public float verbalCoefficient() {
-        return LessonEnum.MATH.verbalCoefficient;
-    }
-
-    @Override
-    public float equalFocusCoefficient() {
-        return LessonEnum.MATH.equalFocusCoefficient;
+    public float scoreTypeCoefficient(ScoreType scoreType) {
+        return scoreType.scoreTypeCoefficient(this);
     }
 
     @Override
@@ -89,6 +81,5 @@ public class Math implements Lesson {
     public void sLessonName(String lessonName) {
         this.lessonName = lessonName;
     }
-
 
 }

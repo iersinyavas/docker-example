@@ -8,11 +8,11 @@ import java.util.List;
 
 public class ScoreUtil {
 
-    public static float scoreCalculate(ScoreType scoreType, List<Lesson> lessonList){
+    public float scoreCalculate(ScoreType scoreType, List<Lesson> lessonList){
         return lessonList.stream().map(lesson  -> scoreType.scoreCalculate(lesson)).reduce(0F, (a, b) -> Float.sum(a, b));
     }
 
-    public static float scoreCalculate(ScoreType scoreType, Lesson... lessons){
+    public float scoreCalculate(ScoreType scoreType, Lesson... lessons){
         return Arrays.asList(lessons).stream().map(lesson  -> scoreType.scoreCalculate(lesson)).reduce(0F, (a, b) -> Float.sum(a, b));
     }
 

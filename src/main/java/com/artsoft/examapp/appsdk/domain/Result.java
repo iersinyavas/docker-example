@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Result {
+    Integer resultId;
     Turkish turkish;
     Math math;
     Science science;

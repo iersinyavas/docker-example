@@ -2,10 +2,10 @@ package com.artsoft.examapp.appsdk.lesson;
 
 //@JsonDeserialize(using = LessonDeserializer.class) interface nin json için serileştirilmesinde kullanılıyor araştır.
 
+import com.artsoft.examapp.appsdk.score.ScoreType;
+
 public interface Lesson {
-    float digitalCoefficient();
-    float verbalCoefficient();
-    float equalFocusCoefficient();
+    float scoreTypeCoefficient(ScoreType scoreType);
     int questionQuantity();
     int gTrue();
     int gFalse();

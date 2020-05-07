@@ -12,4 +12,5 @@ public class University {
     String universityName;
     Integer quality;
     Integer capacity;
+    Integer activeCapacity;
 }

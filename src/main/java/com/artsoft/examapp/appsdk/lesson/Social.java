@@ -1,5 +1,6 @@
 package com.artsoft.examapp.appsdk.lesson;
 
+import com.artsoft.examapp.appsdk.score.ScoreType;
 import com.artsoft.examapp.appsdk.util.LessonEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,18 +20,8 @@ public class Social implements Lesson {
     private float netQuantity;
 
     @Override
-    public float digitalCoefficient() {
-        return LessonEnum.SOCIAL.digitalCoefficient;
-    }
-
-    @Override
-    public float verbalCoefficient() {
-        return LessonEnum.SOCIAL.verbalCoefficient;
-    }
-
-    @Override
-    public float equalFocusCoefficient() {
-        return LessonEnum.SOCIAL.equalFocusCoefficient;
+    public float scoreTypeCoefficient(ScoreType scoreType) {
+        return scoreType.scoreTypeCoefficient(this);
     }
 
     @Override

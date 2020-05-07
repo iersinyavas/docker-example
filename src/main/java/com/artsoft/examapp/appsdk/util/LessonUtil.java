@@ -2,11 +2,8 @@ package com.artsoft.examapp.appsdk.util;
 
 import com.artsoft.examapp.appsdk.lesson.Lesson;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class LessonUtil {
 
