@@ -4,7 +4,7 @@ import com.artsoft.examapp.appsdk.lesson.Lesson;
 import com.artsoft.examapp.appsdk.util.LessonCoefficient;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class VerbalScore implements ScoreType {
+public class ForeignLanguageScore implements ScoreType {
 
     @Autowired
     LessonCoefficient lessonCoefficient;
@@ -16,6 +16,6 @@ public class VerbalScore implements ScoreType {
 
     @Override
     public Float scoreTypeCoefficient(Lesson lesson) {
-        return lessonCoefficient.getLessonVerbalScoreCoefficientMap().get(lesson.baseVariable().getLessonName());
+        return lessonCoefficient.getLessonForeignLanguageCoefficient().get(lesson.baseVariable().getLessonName());
     }
 }

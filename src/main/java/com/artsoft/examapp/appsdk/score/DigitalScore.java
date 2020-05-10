@@ -1,23 +1,22 @@
 package com.artsoft.examapp.appsdk.score;
 
 import com.artsoft.examapp.appsdk.lesson.Lesson;
-import com.artsoft.examapp.appsdk.util.LessonCoefficience;
+import com.artsoft.examapp.appsdk.util.LessonCoefficient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 public class DigitalScore implements ScoreType {
 
     @Autowired
-    LessonCoefficience lessonCoefficience;
+    LessonCoefficient lessonCoefficient;
 
     @Override
     public Float scoreCalculate(Lesson lesson) {
-        return lesson.gNet() * scoreTypeCoefficient(lesson);
+        return lesson.baseVariable().getNetQuantity() * scoreTypeCoefficient(lesson);
     }
 
     @Override
     public Float scoreTypeCoefficient(Lesson lesson) {
-        return lessonCoefficience.getLessonDigitalScoreCoefficientMap().get(lesson.gLessonName());
+        return lessonCoefficient.getLessonDigitalScoreCoefficientMap().get(lesson.baseVariable().getLessonName());
     }
 
 }

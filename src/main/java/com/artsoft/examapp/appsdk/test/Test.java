@@ -1,5 +1,6 @@
-package com.artsoft.examapp.appsdk.domain;
+package com.artsoft.examapp.appsdk.test;
 
+import com.artsoft.examapp.appsdk.lesson.Lesson;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,10 +13,9 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Result{
-    Integer resultId;
-    Map<String, ExamDto> examDtoList;
-    Float digitalScore;
-    Float equalFocusScore;
-    Float verbalScore;
+public class Test {
+
+    String testName;
+    Map<String, List<Lesson>> lessonMap;
+
 }

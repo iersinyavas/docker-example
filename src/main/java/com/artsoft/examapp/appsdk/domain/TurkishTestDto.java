@@ -1,5 +1,7 @@
 package com.artsoft.examapp.appsdk.domain;
 
+import com.artsoft.examapp.appsdk.lesson.Grammar;
+import com.artsoft.examapp.appsdk.lesson.Turkish;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class University {
-    Integer universityId;
-    String universityName;
-    Integer quality;
-    Integer capacity;
-    Integer activeCapacity;
+public class TurkishTestDto {
+    Turkish turkish;
+    Grammar grammar;
 }

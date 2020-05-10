@@ -16,4 +16,4 @@ ENTRYPOINT ["sh","-c","java -jar /app.jar"]
 #volume ve network eklendi. Böylece--link=mysqldb ye gerek kalmadı
 
 #docker container run -p 7070:9090 --network=network1 -e RDS_HOSTNAME=mysqldb  --name examapp iersinyavas/examapp:1
-#ntwork ekleyince linke gerek kalmıyor.
+#network ekleyince linke gerek kalmıyor.

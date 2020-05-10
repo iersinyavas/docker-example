@@ -15,4 +15,5 @@ public class BaseVariable {
     private int falseQuantity;
     private int nullQuantity;
     private float netQuantity;
+    private int questionQuantity;
 }

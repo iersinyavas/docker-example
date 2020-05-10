@@ -5,6 +5,7 @@ import com.artsoft.examapp.appsdk.score.ScoreType;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class ScoreUtil {
 
@@ -19,4 +20,6 @@ public class ScoreUtil {
     public float scoreCalculate(ScoreType scoreType, Lesson lesson){
         return scoreType.scoreCalculate(lesson);
     }
+
+
 }

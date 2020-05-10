@@ -6,16 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
-//@JsonDeserialize(as = Math.class) interface nin json için serileştirilmesinde kullanılıyor araştır.
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Math implements Lesson {
+public class Biology implements Lesson{
 
-    @Autowired
     BaseVariable baseVariable;
 
     @Override
@@ -27,5 +24,4 @@ public class Math implements Lesson {
     public BaseVariable baseVariable() {
         return this.baseVariable;
     }
-
 }

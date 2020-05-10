@@ -1,19 +1,21 @@
 package com.artsoft.examapp.appsdk.util;
 
-import com.artsoft.examapp.appsdk.domain.Result;
-import com.artsoft.examapp.appsdk.domain.ResultScore;
+import com.artsoft.examapp.appsdk.domain.*;
+import com.artsoft.examapp.appsdk.exam.Exam;
 import com.artsoft.examapp.appsdk.lesson.*;
 import com.artsoft.examapp.appsdk.lesson.Math;
 import com.artsoft.examapp.appsdk.score.DigitalScore;
 import com.artsoft.examapp.appsdk.score.EqualFocusScore;
+import com.artsoft.examapp.appsdk.score.ForeignLanguageScore;
 import com.artsoft.examapp.appsdk.score.VerbalScore;
-import com.artsoft.examapp.appsdk.domain.StudentDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class JsonConverter {
 
@@ -35,40 +37,98 @@ public class JsonConverter {
     @Autowired
     EqualFocusScore equalFocusScore;
 
-    private Result resultCreate(Stream<Lesson> lessonStream){
-        ResultScore resultScore = new ResultScore();
+    @Autowired
+    ForeignLanguageScore foreignLanguageScore;
 
-        resultScore.setLessonList(lessonUtil.lessonCreate(lessonStream.collect(Collectors.toList())));
-        resultScore.setDigitalScore(scoreUtil.scoreCalculate(digitalScore, resultScore.getLessonList())+SystemConstant.BASE_SCORE);
-        resultScore.setEqualFocusScore(scoreUtil.scoreCalculate(verbalScore, resultScore.getLessonList())+SystemConstant.BASE_SCORE);
-        resultScore.setVerbalScore(scoreUtil.scoreCalculate(equalFocusScore, resultScore.getLessonList())+SystemConstant.BASE_SCORE);
+    private Result resultCreate(Map<String, Exam> examMap){
 
         Result result = new Result();
-        resultScore.getLessonList().stream().filter(lesson -> lesson.gLessonName().equals("Matematik")).forEach(
-                lesson -> result.setMath((Math)lesson)
-        );
-        resultScore.getLessonList().stream().filter(lesson -> lesson.gLessonName().equals("Sosyal")).forEach(
-                lesson -> result.setSocial((Social)lesson)
-        );
-        resultScore.getLessonList().stream().filter(lesson -> lesson.gLessonName().equals("Fen")).forEach(
-                lesson -> result.setScience((Science) lesson)
-        );
-        resultScore.getLessonList().stream().filter(lesson -> lesson.gLessonName().equals("Türkçe")).forEach(
-                lesson -> result.setTurkish((Turkish) lesson)
+        result.setDigitalScore(0f);
+        result.setEqualFocusScore(0f);
+        result.setVerbalScore(0f);
+        examMap.entrySet().stream().forEach(
+                exam -> exam.getValue().getTestMap().entrySet().stream().forEach(
+                        testMap -> testMap.getValue().stream().forEach(
+                                test -> test.getLessonMap().entrySet().stream().forEach(
+                                        lessonMap -> {
+                                            lessonUtil.lessonCreate(lessonMap.getValue());
+                                            result.setDigitalScore(result.getDigitalScore()+scoreUtil.scoreCalculate(digitalScore, lessonMap.getValue()));
+                                            result.setEqualFocusScore(result.getEqualFocusScore()+scoreUtil.scoreCalculate(equalFocusScore, lessonMap.getValue()));
+                                            result.setVerbalScore(result.getVerbalScore()+scoreUtil.scoreCalculate(verbalScore, lessonMap.getValue()));
+                                        }
+                                )
+                        )
+                )
         );
 
-        result.setDigitalScore(resultScore.getDigitalScore());
-        result.setEqualFocusScore(resultScore.getEqualFocusScore());
-        result.setVerbalScore(resultScore.getVerbalScore());
+        result.setDigitalScore(result.getDigitalScore()+SystemConstant.BASE_SCORE);
+        result.setEqualFocusScore(result.getEqualFocusScore()+SystemConstant.BASE_SCORE);
+        result.setVerbalScore(result.getVerbalScore()+SystemConstant.BASE_SCORE);
+
+        Map<String, ExamDto> examDtoMap = new HashMap<>();
+
+        ExamDto examDto = ExamDto.builder()
+                .turkishTestDto(TurkishTestDto
+                        .builder()
+                        .turkish((Turkish) lessonExtract(examMap, "Türkçe"))
+                        .grammar((Grammar) lessonExtract(examMap, "Dil Bilgisi"))
+                        .build())
+                .mathTestDto(MathTestDto
+                        .builder()
+                        .math((Math) lessonExtract(examMap, "Matematik"))
+                        .geometry((Geometry) lessonExtract(examMap, "Geometri"))
+                        .build())
+                .scienceTestDto(ScienceTestDto
+                        .builder()
+                        .physics((Physics) lessonExtract(examMap, "Fizik"))
+                        .chemistry((Chemistry) lessonExtract(examMap, "Kimya"))
+                        .biology((Biology) lessonExtract(examMap, "Biyoloji"))
+                        .build())
+                .socialTestDto(SocialTestDto
+                        .builder()
+                        .geography((Geography) lessonExtract(examMap, "Coğrafya"))
+                        .history((History) lessonExtract(examMap, "Tarih"))
+                        .philosophy((Philosophy) lessonExtract(examMap, "Felsefe"))
+                        .religionCulture((ReligionCulture) lessonExtract(examMap, "Din Kültürü"))
+                        .build())
+                .build();
+        examDtoMap.put("YGS", examDto);
+
+        result.setExamDtoList(examDtoMap);
 
         return result;
     }
 
-    public String studentCreate(Stream<Lesson> lessonStream){
+    private Lesson lessonExtract(Map<String, Exam> examMap, String lessonName){
+         AtomicReference<Lesson> lesson = new AtomicReference<>();
+         examMap.entrySet().stream().forEach(
+                exam -> exam.getValue().getTestMap().entrySet().stream().forEach(
+                        testMap -> testMap.getValue().stream().forEach(
+                                test -> test.getLessonMap().entrySet().stream().forEach(
+                                        lessonMap -> lessonMap.getValue().stream().filter(lesson1 -> lesson1.baseVariable().getLessonName().equals(lessonName)).forEach(
+                                                lesson1 -> {
+                                                    lesson.set(lesson1);
+                                                }
+                                        )
+                                )
+                        )
+                )
+        );
+         return lesson.get();
+    }
+
+    public StudentDto studentCreate1(Map<String, Exam> examMap){
+        StudentDto studentDto = new StudentDto();
+        studentDto.setResult(this.resultCreate(examMap));
+        return studentDto;
+    }
+
+    public String studentCreate(Map<String, Exam> examMap){
+
         String studentString = null;
         StudentDto studentDto = new StudentDto();
         try {
-            studentDto.setResult(this.resultCreate(lessonStream));
+            studentDto.setResult(this.resultCreate(examMap));
             studentString = objectMapper.writeValueAsString(studentDto);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
