@@ -21,5 +21,4 @@ public class ScoreUtil {
         return scoreType.scoreCalculate(lesson);
     }
 
-
 }

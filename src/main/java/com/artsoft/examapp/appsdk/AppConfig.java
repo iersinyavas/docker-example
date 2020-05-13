@@ -113,6 +113,8 @@ public class AppConfig {
         lessonEqualFocusScoreCoefficient.put("Fizik", LessonEnum.SCIENCE.equalFocusCoefficient);
         lessonEqualFocusScoreCoefficient.put("Kimya", LessonEnum.SCIENCE.equalFocusCoefficient);
 
+        //lessonForeignLanguageCoefficient.put("İngilizce", 4f);
+
         return new LessonCoefficient(lessonDigitalScoreCoefficientMap, lessonVerbalScoreCoefficientMap, lessonEqualFocusScoreCoefficient, lessonForeignLanguageCoefficient);
     }
 
@@ -143,6 +145,10 @@ public class AppConfig {
                 Chemistry.builder().baseVariable(BaseVariable.builder().lessonName("Kimya").questionQuantity(13).build()).build(),
                 Biology.builder().baseVariable(BaseVariable.builder().lessonName("Biyoloji").questionQuantity(13).build()).build()
         ));
+
+        /*testMap.put("İngilizce", Arrays.asList(
+                English.builder().baseVariable(BaseVariable.builder().lessonName("İngilizce").questionQuantity(100).build()).build()
+        ));*/
         return new LessonConfig(testMap);
     }
 }

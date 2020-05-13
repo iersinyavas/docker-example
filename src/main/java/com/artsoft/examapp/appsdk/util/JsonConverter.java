@@ -4,10 +4,7 @@ import com.artsoft.examapp.appsdk.domain.*;
 import com.artsoft.examapp.appsdk.exam.Exam;
 import com.artsoft.examapp.appsdk.lesson.*;
 import com.artsoft.examapp.appsdk.lesson.Math;
-import com.artsoft.examapp.appsdk.score.DigitalScore;
-import com.artsoft.examapp.appsdk.score.EqualFocusScore;
-import com.artsoft.examapp.appsdk.score.ForeignLanguageScore;
-import com.artsoft.examapp.appsdk.score.VerbalScore;
+import com.artsoft.examapp.appsdk.score.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +43,8 @@ public class JsonConverter {
         result.setDigitalScore(0f);
         result.setEqualFocusScore(0f);
         result.setVerbalScore(0f);
+        result.setForeignLanguageScore(0f);
+
         examMap.entrySet().stream().forEach(
                 exam -> exam.getValue().getTestMap().entrySet().stream().forEach(
                         testMap -> testMap.getValue().stream().forEach(
@@ -55,6 +54,7 @@ public class JsonConverter {
                                             result.setDigitalScore(result.getDigitalScore()+scoreUtil.scoreCalculate(digitalScore, lessonMap.getValue()));
                                             result.setEqualFocusScore(result.getEqualFocusScore()+scoreUtil.scoreCalculate(equalFocusScore, lessonMap.getValue()));
                                             result.setVerbalScore(result.getVerbalScore()+scoreUtil.scoreCalculate(verbalScore, lessonMap.getValue()));
+                                            //result.setForeignLanguageScore(result.getForeignLanguageScore()+scoreUtil.scoreCalculate(foreignLanguageScore, lessonMap.getValue()));
                                         }
                                 )
                         )
@@ -64,6 +64,7 @@ public class JsonConverter {
         result.setDigitalScore(result.getDigitalScore()+SystemConstant.BASE_SCORE);
         result.setEqualFocusScore(result.getEqualFocusScore()+SystemConstant.BASE_SCORE);
         result.setVerbalScore(result.getVerbalScore()+SystemConstant.BASE_SCORE);
+        result.setForeignLanguageScore(result.getForeignLanguageScore()+SystemConstant.BASE_SCORE);
 
         Map<String, ExamDto> examDtoMap = new HashMap<>();
 
@@ -91,6 +92,11 @@ public class JsonConverter {
                         .philosophy((Philosophy) lessonExtract(examMap, "Felsefe"))
                         .religionCulture((ReligionCulture) lessonExtract(examMap, "Din Kültürü"))
                         .build())
+                .foreignLanguageTestDto(ForeignLanguageTestDto
+                        .builder()
+                        .english((English) lessonExtract(examMap, "İngilizce"))
+                        .build()
+                )
                 .build();
         examDtoMap.put("YGS", examDto);
 

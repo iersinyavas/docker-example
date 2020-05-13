@@ -18,4 +18,5 @@ public class ExamDto {
     MathTestDto mathTestDto;
     SocialTestDto socialTestDto;
     ScienceTestDto scienceTestDto;
+    ForeignLanguageTestDto foreignLanguageTestDto;
 }

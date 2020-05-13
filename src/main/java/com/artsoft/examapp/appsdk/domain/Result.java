@@ -18,4 +18,5 @@ public class Result{
     Float digitalScore;
     Float equalFocusScore;
     Float verbalScore;
+    Float foreignLanguageScore;
 }

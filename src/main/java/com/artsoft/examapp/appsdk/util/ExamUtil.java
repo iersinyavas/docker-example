@@ -1,12 +1,11 @@
 package com.artsoft.examapp.appsdk.util;
 
 import com.artsoft.examapp.appsdk.exam.Exam;
+import com.artsoft.examapp.appsdk.lesson.Lesson;
 import com.artsoft.examapp.appsdk.test.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ExamUtil {
 
@@ -29,4 +28,6 @@ public class ExamUtil {
                 .testMap(testMap)
                 .build();
     }
+
+
 }
